@@ -1,0 +1,45 @@
+import sys
+
+fixed_account = [{"uname":"mashpots", "pw":"281299"}]
+
+print("""                  
++----------------------+
+|         MENU         |
++----------------------+           
+|  1. Create Account   |
+|  2. Login            |
+|  3. Exit             |
++----------------------+
+      """)
+
+menu = int(input("Silahkan Pilih Menu : "))
+
+pilihan = 'y'
+while pilihan == 'y' :
+    if menu == 1 :
+        new_account = {}
+        new_account["uname"] = input("Username : ")
+        new_account["pw"] = input("Password : ")
+        fixed_account.append(new_account)
+        print("Akun Anda Berhasil Terdaftar")
+    elif menu == 2:
+        a = 0
+        while a <= 3:
+            username = input("Username : ")
+            password = input("Password : ")
+            current_user = next((new_account for new_account in fixed_account if username == new_account
+                    ["uname"] and password == new_account["pw"]), False)
+            if current_user:
+                print("Selamat Datang", username)
+                break
+            else:
+                print("Username Atau Password Salah, Sisa Percobaan Login Adalah = 3 Anda Sudah Login Ke -", a + 1)
+            a += 1
+            print("=====================================================================================")
+    elif menu == 3 :
+        print("Terima kasih")
+        break
+        
+    else:
+        print("Menu Tidak Tersedia, Silahkan Coba Lagi")
+    menu = int(input("Silahkan Pilih Menu : "))
