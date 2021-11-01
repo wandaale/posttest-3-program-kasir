@@ -1,0 +1,114 @@
+import datetime
+
+print("""
+    ====================================
+    
+                 Avore Cafe                                                                                            
+ 
+    ====================================
+    ---------List Menu Makanan---------
+    1. Toast                   : 25.000
+    2. Onion Ring              : 10.000
+    3. Spring Roll             : 25.000
+    4. Fruit Salad             : 35.000
+    5. Chicken Wings           : 40.000
+    ---------List Menu Minuman---------
+    1. Thai Tea                : 15.000
+    2. Ovaltine                : 15.000
+    3. Green Tea               : 15.000
+    4. Red Velvet              : 15.000
+    5. Choco Lava Milo         : 20.000
+    ====================================
+    -------------List Promo-------------
+    a. Mendapat Diskon Setiap Pembelian 
+       3 Minuman Sebesar 10%
+    b. Mendapat Diskon Setiap Pembelian 
+       2 Makanan Sebesar 5%
+    c. Mendapat Diskon Setiap Pembayaran 
+       Melalui E - Money 
+       Sebesar 5%
+    d. Mendapat Diskon Saat Weekend 
+       Sebesar 5%
+    e. Mendapat Diskon Saat Weekdays 
+       Sebesar 10%
+    ====================================
+    """)
+
+food = [
+  {"food_list" : 1 , "food_name" : "Toast", "food_price" : 25000},
+  {"food_list" : 2 , "food_name" : "Onion Ring", "food_price" : 10000},
+  {"food_list" : 3 , "food_name" : "Spring Roll", "food_price" : 25000},
+  {"food_list" : 4 , "food_name" : "Fruit Salad", "food_price" : 35000},
+  {"food_list" : 5 , "food_name" : "Chicken Wings", "food_price" : 40000},
+]
+drink = [
+  {"drink_list" : 1 , "drink_name" : "Thai Tea", "drink_price" : 15000},
+  {"drink_list" : 2 , "drink_name" : "Ovaltine", "drink_price" : 15000},
+  {"drink_list" : 3 , "drink_name" : "Green Tea", "drink_price" : 15000},
+  {"drink_list" : 4 , "drink_name" : "Red Velvet", "drink_price" : 15000},
+  {"drink_list" : 5 , "drink_name" : "Choco Lava Milo", "drink_price" : 20000},
+]
+
+
+list_ordered_food = []
+list_ordered_drink = []
+
+print ("SELAMAT DATANG :)")
+
+order = str(input("Mau Memesan Sesuatu? "))
+while order == "mau" :
+    order_food = int(input("Mau Pesan Makanan Nomor Berapa? "))
+    orderan = next((sub for sub in food if sub["food_list"] == order_food), None)
+    total = input("Berapa Porsi Yang Mau Anda Pesan? ")
+    orderan["total"] = int(total)
+    orderan["payment"] = orderan["total"] * orderan["food_price"]
+    list_ordered_food.append(orderan)
+    order = str(input("Mau Pesan Makanan Lagi? "))
+
+    if order == "tidak" :
+        order_again = "mau"
+        while order_again == "mau" :
+            order_drink = int(input("Mau Pesan Minuman Nomor Berapa? "))
+            orderan = next((sub for sub in drink if sub["drink_list"] == order_drink), None)
+            total = input(f"Berapa Porsi Yang Mau Anda Pesan? ")
+            orderan["total"] = int(total)
+            orderan["payment"] = orderan["total"] * orderan["drink_price"]
+            list_ordered_drink.append(orderan)
+            order_again = str(input("Mau Pesan Minuman Lagi? "))
+        print()
+total_food = 0
+total_drinks = 0
+for list_order in list_ordered_food :
+    total_food += list_order['total']
+for list_order in list_ordered_drink :
+    total_drinks += list_order['total']
+
+print("""
+""")  
+print("              Avore Cafe              ")                                                       
+print("   --------------------------------") 
+for list_order in list_ordered_food:
+    print(f"   {list_order['food_name']}")
+    print(f"   {list_order['food_price']} x {list_order['total']} = {(list_order['payment'])}")
+for list_order in list_ordered_drink:
+    print(f"   {list_order['drink_name']}")
+    print(f"   {list_order['drink_price']} x {list_order['total']} = {(list_order['payment'])}")
+print("   --------------------------------")
+payment_method = input("   Metode Pembayaran : ")
+payment_discount = 5 if payment_method == "E - Money" else 0
+print("   --------------------------------")
+
+day_discount = 10 if datetime.datetime.today().weekday() < 5 else 5
+ 
+food_discount = 10 if total_food >= 3 else 0
+drink_discount = 5 if total_drinks >= 2 else 0
+total_discount = payment_discount + day_discount + food_discount + drink_discount
+list_all_ordered = list_ordered_food + list_ordered_drink
+total_payment = sum(list_order['payment'] for list_order in list_all_ordered)
+cut_discount = total_payment * total_discount / 100
+final_payment = int(total_payment - cut_discount)
+print(f"   Sub Total : {(total_payment)}")
+print(f"   Diskon {int(total_discount)}% : {int(cut_discount)}")
+print(f"   Total Bayar: {(final_payment)}")
+print("""
+""")
